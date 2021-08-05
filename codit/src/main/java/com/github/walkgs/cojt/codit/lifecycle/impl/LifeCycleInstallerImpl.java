@@ -34,7 +34,7 @@ class LifeCycleInstallerImpl implements LifeCycleInstaller {
                 final StrategyHandler<LifeDescription, LifeCycleInstaller> strategyHandler = $description.strategies;
                 final Binder<Object> binder = (Binder<Object>) strategyHandler.getClass().getDeclaredField("strategies").get(strategyHandler);
                 for (Class<?> strategy : strategies)
-                    binder.bind(strategy.newInstance(), UUID.randomUUID() + DEFAULT_PRIMARY_NAME + System.currentTimeMillis());
+                    binder.bind(strategy.newInstance());
                     //strategyHandler.register(strategy);
                 descriptions.bind($description, UUID.randomUUID() + DEFAULT_PRIMARY_NAME + (instance.hashCode() * 48) + $description.getCreatedIn());
                 strategyHandler.setup(new Context<>($description, this, strategyHandler));
@@ -53,7 +53,7 @@ class LifeCycleInstallerImpl implements LifeCycleInstaller {
                     //strategyHandler.register(strategy);
                 final Binder<Object> binder = (Binder<Object>) strategyHandler.getClass().getDeclaredField("strategies").get(strategyHandler);
                 for (Object strategy : strategies)
-                    binder.bind(strategy, UUID.randomUUID() + DEFAULT_PRIMARY_NAME + System.currentTimeMillis());
+                    binder.bind(strategy);
                 descriptions.bind($description, UUID.randomUUID() + DEFAULT_PRIMARY_NAME + (instance.hashCode() * 48) + $description.getCreatedIn());
                 strategyHandler.setup(new Context<>($description, this, strategyHandler));
             } catch (Exception e) {
