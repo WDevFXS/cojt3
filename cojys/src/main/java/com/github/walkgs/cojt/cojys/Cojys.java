@@ -40,7 +40,7 @@ public class Cojys {
 
                         private static final String NOT_STRATEGY_MESSAGE = "The inserted object is not a strategy";
 
-                        private transient Binder<Object> strategies = new SingleBinder<>();
+                        private transient Binder<Object> strategies = new SingleBinder<>(false);
 
                         @Override
                         public boolean register(final Class<?> strategy) {
@@ -198,7 +198,7 @@ public class Cojys {
 
                         private static final int NORMAL = 0x100;
 
-                        private transient Binder<Object> events = new SingleBinder<>();
+                        private transient Binder<Object> events = new SingleBinder<>(false);
 
                         @Override
                         public void register(final Class<?> event) throws BindException {
