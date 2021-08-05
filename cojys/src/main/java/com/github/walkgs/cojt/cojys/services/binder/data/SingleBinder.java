@@ -24,17 +24,31 @@ public class SingleBinder<T> implements Binder<T> {
 
     private transient Binder<Binder<T>> parents;
 
+    private final boolean checkAssociates;
+
     protected SingleBinder(Binder<Binder<T>> parents) {
         this.parents = parents;
+        this.checkAssociates = true;
+    }
+
+    protected SingleBinder(Binder<Binder<T>> parents, boolean checkAssociates) {
+        this.parents = parents;
+        this.checkAssociates = checkAssociates;
+    }
+
+    public SingleBinder(boolean checkAssociates) {
+        parents = new SingleBinder<>(null);
+        this.checkAssociates = checkAssociates;
     }
 
     public SingleBinder() {
         parents = new SingleBinder<>(null);
+        this.checkAssociates = true;
     }
 
     @Override
     public synchronized void bind(final T bind) throws BindException {
-        final Class<?> clazz = checkIsAlreadyAssociatedBind(bind);
+        final Class<?> clazz = checkAssociates ? checkIsAlreadyAssociatedBind(bind) : bind.getClass();
 
         if (clazz.isAnnotationPresent(Name.class)) {
             final String name = clazz.getAnnotation(Name.class).name();
@@ -58,7 +72,8 @@ public class SingleBinder<T> implements Binder<T> {
 
     @Override
     public synchronized void bind(final T bind, final String name) throws BindException {
-        checkIsAlreadyAssociatedBind(bind);
+        if (checkAssociates)
+            checkIsAlreadyAssociatedBind(bind);
         if (usedNames.contains(name))
             throw new BindException(ALREADY_ASSOCIATED_NAME_MESSAGE);
         usedNames.add(name);

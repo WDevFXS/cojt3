@@ -25,7 +25,7 @@ class LifeCycleInstallerImpl implements LifeCycleInstaller {
     private static final String DEFAULT_PRIMARY_NAME = "LifeCycleDescriptionInstaller@";
     private static final EventHandlerCreator EVENT_HANDLER_CREATOR = Cojys.getSystemLocalServices().get("EventHandlerCreator");
 
-    private final SingleBinder<LifeDescription> descriptions = new SingleBinder<>();
+    private final SingleBinder<LifeDescription> descriptions = new SingleBinder<>(false);
 
     @Override
     public LifeDescription install(final Object instance, final Class<?>... strategies) throws IllegalClassFormatException {
