@@ -17,6 +17,7 @@ import lombok.NonNull;
 
 import java.lang.instrument.IllegalClassFormatException;
 import java.net.BindException;
+import java.util.UUID;
 
 class LifeCycleInstallerImpl implements LifeCycleInstaller {
 
@@ -33,7 +34,7 @@ class LifeCycleInstallerImpl implements LifeCycleInstaller {
                 final StrategyHandler<LifeDescription, LifeCycleInstaller> strategyHandler = $description.strategies;
                 for (Class<?> strategy : strategies)
                     strategyHandler.register(strategy);
-                descriptions.bind($description, DEFAULT_PRIMARY_NAME + (instance.hashCode() * 48) + $description.getCreatedIn());
+                descriptions.bind($description, UUID.randomUUID() + DEFAULT_PRIMARY_NAME + (instance.hashCode() * 48) + $description.getCreatedIn());
                 strategyHandler.setup(new Context<>($description, this, strategyHandler));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -48,7 +49,7 @@ class LifeCycleInstallerImpl implements LifeCycleInstaller {
                 final StrategyHandler<LifeDescription, LifeCycleInstaller> strategyHandler = $description.strategies;
                 for (Object strategy : strategies)
                     strategyHandler.register(strategy);
-                descriptions.bind($description, DEFAULT_PRIMARY_NAME + (instance.hashCode() * 48) + $description.getCreatedIn());
+                descriptions.bind($description, UUID.randomUUID() + DEFAULT_PRIMARY_NAME + (instance.hashCode() * 48) + $description.getCreatedIn());
                 strategyHandler.setup(new Context<>($description, this, strategyHandler));
             } catch (Exception e) {
                 e.printStackTrace();
