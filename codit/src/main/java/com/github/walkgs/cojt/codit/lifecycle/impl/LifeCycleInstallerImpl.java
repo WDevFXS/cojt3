@@ -32,8 +32,10 @@ class LifeCycleInstallerImpl implements LifeCycleInstaller {
         return install(instance).apply($description -> {
             try {
                 final StrategyHandler<LifeDescription, LifeCycleInstaller> strategyHandler = $description.strategies;
+                final Binder<Object> binder = (Binder<Object>) strategyHandler.getClass().getDeclaredField("strategies").get(strategyHandler);
                 for (Class<?> strategy : strategies)
-                    strategyHandler.register(strategy);
+                    binder.bind(strategy.newInstance(), UUID.randomUUID() + DEFAULT_PRIMARY_NAME + System.currentTimeMillis());
+                    //strategyHandler.register(strategy);
                 descriptions.bind($description, UUID.randomUUID() + DEFAULT_PRIMARY_NAME + (instance.hashCode() * 48) + $description.getCreatedIn());
                 strategyHandler.setup(new Context<>($description, this, strategyHandler));
             } catch (Exception e) {
@@ -47,8 +49,11 @@ class LifeCycleInstallerImpl implements LifeCycleInstaller {
         return install(instance).apply($description -> {
             try {
                 final StrategyHandler<LifeDescription, LifeCycleInstaller> strategyHandler = $description.strategies;
+                //for (Object strategy : strategies)
+                    //strategyHandler.register(strategy);
+                final Binder<Object> binder = (Binder<Object>) strategyHandler.getClass().getDeclaredField("strategies").get(strategyHandler);
                 for (Object strategy : strategies)
-                    strategyHandler.register(strategy);
+                    binder.bind(strategy, UUID.randomUUID() + DEFAULT_PRIMARY_NAME + System.currentTimeMillis());
                 descriptions.bind($description, UUID.randomUUID() + DEFAULT_PRIMARY_NAME + (instance.hashCode() * 48) + $description.getCreatedIn());
                 strategyHandler.setup(new Context<>($description, this, strategyHandler));
             } catch (Exception e) {

@@ -48,7 +48,7 @@ public class Cojys {
                                 checkIsStrategy(strategy);
                                 final Strategy annotation = strategy.getAnnotation(Strategy.class);
                                 strategies.bind(strategy.newInstance(), annotation.name());
-                                return true;
+                                return true; //annotation != null ? annotation.name() : UUID.randomUUID() + "_" + System.currentTimeMillis()
                             } catch (IllegalAccessException | InstantiationException | BindException e) {
                                 return false;
                             }
